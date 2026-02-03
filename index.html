@@ -42,15 +42,17 @@
         .login-box button:hover {
             background: #0056b3;
         }
-        /* 原页面背景样式 */
         body {
             background-image: url('bg.jpg');
-            background-repeat: no-repeat;
             background-size: cover;
+            background-repeat: no-repeat;
             background-attachment: fixed;
-            margin: 0;
-            padding: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            font-size:20px;
+            line-height: 3;
         }
+
         h2 {
             /*color: white;*/
             text-shadow: 0 0 5px rgba(0,0,0,0.8);
@@ -62,54 +64,14 @@
         h3{
             padding: 0 20px;
         }
-        /* 1. 全局重置与基础样式（解决核心适配问题） */
+
         * {
-            /* 去除浏览器默认的内外边距，避免布局混乱 */
             margin: 0;
             padding: 0;
-            /* 核心：让元素的宽高包含边框和内边距，避免计算错误导致溢出 */
             box-sizing: border-box;
         }
 
-        body {
-            /* 让页面最大宽度不超过电脑端舒适宽度，小屏幕下自动铺满 */
-            max-width: 1200px;
-            /* 让页面在大屏幕下居中，小屏幕下左右留边距，不顶格 */
-            margin: 0 auto;
-            padding: 10px 15px;
-            /* 核心：文字自动换行，强制打断超长文本（比如长网址、长文件名），避免横向溢出 */
-            word-wrap: break-word;
-            word-break: break-all;
-            /* 小屏幕下字体不宜过小，保证可读性 */
-            font-size: 16px;
-            /* 行高适中，避免文字挤在一起 */
-            line-height: 3;
-        }
 
-
-        /* 纯文字链接的适配（保留原有链接样式，增加适配） */
-        a {
-            /* 避免链接文字挤在一起，增加左右间距 */
-            margin: 4px 0;
-            /* 悬停反馈（增强交互） */
-            transition: color 0.3s;
-        }
-
-        /* 3. 媒体查询（可选，针对手机小屏幕精细化优化） */
-        /* 当屏幕宽度小于768px（手机和平板竖屏）时，执行以下样式 */
-        @media (max-width: 768px) {
-            body {
-                /* 小屏幕下增加左右内边距，提升阅读呼吸感 */
-                padding: 20px 12px;
-                /* 小屏幕下字体稍调大，更易阅读 */
-                font-size: 25px;
-            }
-
-            /* 小屏幕下，列表项上下间距增加，避免拥挤 */
-            ul li, ol li {
-                margin: 10px 0;
-            }
-        }
     </style>
 </head>
 <body style="background-image: url('bg.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; margin: 0; padding: 0;">
