@@ -2,164 +2,32 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI绘图</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            min-height: 100px;
-            font-size: 16px;
-            resize: vertical;
-        }
-        .btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn:disabled {
-            background-color: #6c757d;
-            cursor: not-allowed;
-        }
-        .loading {
-            display: none;
-            margin: 20px 0;
-            color: #007bff;
-        }
-        .result-area {
-            margin-top: 30px;
-            display: none;
-        }
-        .result-img {
-            max-width: 100%;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        .error {
-            color: #dc3545;
-            margin: 10px 0;
-            display: none;
-        }
-    </style>
+    <title>AI交流</title>
 </head>
 <body>
-<div class="container">
-    <h1>AI绘图</h1>
-
-    <div class="input-group">
-        <label for="prompt">请输入图片生成要求：</label>
-        <textarea id="prompt" placeholder="例如：一只可爱的橘猫在草地上睡觉，写实风格，高清，8K"></textarea>
-    </div>
-
-    <button id="generateBtn" class="btn">生成图片</button>
-
-    <div class="loading" id="loading">正在生成图片，请稍候...</div>
-    <div class="error" id="error"></div>
-
-    <div class="result-area" id="resultArea">
-        <h3>生成结果：</h3>
-        <img src="" alt="生成的图片" class="result-img" id="resultImg">
-    </div>
+<!-- 伪内嵌：点击弹出豆包窗口 -->
+<div style="margin: 20px 0; text-align: center;">
+    <button onclick="openDoubao()" style="padding: 12px 24px; background: #0066ff; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+        🤖 打开内嵌式豆包 AI
+    </button>
 </div>
 
 <script>
-    // 获取DOM元素
-    const generateBtn = document.getElementById('generateBtn');
-    const promptInput = document.getElementById('prompt');
-    const loading = document.getElementById('loading');
-    const error = document.getElementById('error');
-    const resultArea = document.getElementById('resultArea');
-    const resultImg = document.getElementById('resultImg');
+    // 弹出固定大小的豆包窗口（伪内嵌）
+    function openDoubao() {
+        // 计算窗口位置（居中显示）
+        const width = 800;
+        const height = 700;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
 
-    // 生成图片按钮点击事件
-    generateBtn.addEventListener('click', async () => {
-        const prompt = promptInput.value.trim();
-
-        // 验证输入
-        if (!prompt) {
-            error.textContent = '请输入图片生成要求！';
-            error.style.display = 'block';
-            return;
-        }
-
-        // 重置状态
-        error.style.display = 'none';
-        resultArea.style.display = 'none';
-        generateBtn.disabled = true;
-        loading.style.display = 'block';
-
-        try {
-            // 调用后端接口
-            const response = await fetch('/generate-image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: prompt })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                // 显示生成的图片
-                resultImg.src = data.imageUrl;
-                resultArea.style.display = 'block';
-            } else {
-                error.textContent = `生成失败：${data.message}`;
-                error.style.display = 'block';
-            }
-        } catch (err) {
-            error.textContent = '网络错误，请重试！';
-            error.style.display = 'block';
-            console.error('Error:', err);
-        } finally {
-            // 恢复状态
-            generateBtn.disabled = false;
-            loading.style.display = 'none';
-        }
-    });
+        // 打开豆包窗口，样式接近内嵌
+        window.open(
+            "https://www.doubao.com/",
+            "doubao-ai",
+            `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
+        );
+    }
 </script>
 </body>
 </html>
