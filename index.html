@@ -71,7 +71,80 @@
             box-sizing: border-box;
         }
 
+        .ai-assistant-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            z-index: 9999;
+            padding: 0px; /* 图片内边距 */
+        }
 
+        /* ai助手图片样式 */
+        .ai-assistant-btn img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover; /* 保证图片比例 */
+        }
+        /* AI助手样式 */
+        .doubao-btn {
+            padding: 8px 16px;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .doubao-btn:hover {
+            background-color: #4f46e5;
+        }
+        /* 遮罩层：覆盖整个页面，默认隐藏 */
+        #chatMask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1); /* 半透明遮罩 */
+            z-index: 9998; /* 低于聊天窗口，高于页面内容 */
+            display: none;
+        }
+        /* 聊天窗口样式：固定在右下角，默认隐藏 */
+        #doubaoIframe {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 490px;
+            height: 700px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 9999; /* 确保在最上层 */
+        }
+        /* 关闭按钮样式 */
+        .close-btn {
+            position: fixed;
+            bottom: 630px;
+            right: 20px;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: none;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body style="background-image: url('bg.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; margin: 0; padding: 0;">
@@ -84,6 +157,19 @@
         <button onclick="checkLogin()" >登录</button>
     </div>
 </div>-->
+
+<!-- AI助手按钮-->
+    <button class="ai-assistant-btn" onclick="openDoubaoChat()">
+        <img src="ai.jpg" alt="AI助手">
+    </button>
+    <div id="chatMask" onclick="closeDoubaoChat()"></div>
+    <button class="close-btn" onclick="closeDoubaoChat()">×</button>
+    <iframe
+        id="doubaoIframe"
+        src="https://www.doubao.com/chat"
+        title="AI助手">
+    </iframe>
+
     <h3>1.渝快银网址：<a href="https://znsymerchant.cqfintec.com" target="_blank">跳转</a> </h3>
     <h3>2.嗨客多网址：<a href="https://midoffice.hicooduo.com" target="_blank">跳转</a> </h3>
     <h3>3.58通用驱动：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/58%E5%B0%8F%E7%A5%A8%E6%89%93%E5%8D%B0%E6%9C%BA%E9%80%9A%E7%94%A8%E9%A9%B1%E5%8A%A8.exe" class="download-btn">下载</a></h3>
@@ -101,18 +187,15 @@
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/facepay-1.0.5.zip" class="download-btn">安装包(人脸识别版)</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/baidufacedemo.zip" class="download-btn"> 百度人脸识别SDK</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E8%AE%AF%E9%A3%9E%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E9%9F%B3%2B.zip" class="download-btn">讯飞语音</a></h3>
-    <h3>8.AI访问：<a href="ai.html" target="_blank">跳转</a> </h3>
-    <h3>9.。。。（上传中）：<a href="" target="_blank">跳转</a> </h3>
-     <script>
-    // 验证登录
+    <h3>8.。。。（开发中）：<a href="" target="_blank">跳转</a> </h3>
+<script>
+    // 登录功能区
     function checkLogin() {
         // 这里可以替换成你想要的账号密码
         const validUser = "admin";
         const validPwd = "123456";
-
         const inputUser = document.getElementById('username').value;
         const inputPwd = document.getElementById('password').value;
-
         if (inputUser === validUser && inputPwd === validPwd) {
             // 登录成功，隐藏弹窗，显示内容
             document.getElementById('loginModal').style.display = 'none';
@@ -121,6 +204,24 @@
             alert("账号或密码错误，请重试！");
         }
     }
+
+    //AI助手功能区
+    // 打开聊天窗口
+    function openDoubaoChat() {
+        document.getElementById('chatMask').style.display = 'block'; // 显示遮罩
+        document.getElementById('doubaoIframe').style.display = 'block'; // 显示聊天窗口
+        document.querySelector('.close-btn').style.display = 'block'; // 显示关闭按钮
+    }
+    // 关闭聊天窗口
+    function closeDoubaoChat() {
+        document.getElementById('chatMask').style.display = 'none'; // 隐藏遮罩
+        document.getElementById('doubaoIframe').style.display = 'none'; // 隐藏聊天窗口
+        document.querySelector('.close-btn').style.display = 'none'; // 隐藏关闭按钮
+    }
+    // 防止点击聊天窗口内部触发关闭（关键优化）
+    document.getElementById('doubaoIframe').addEventListener('click', function(e) {
+        e.stopPropagation(); // 阻止事件冒泡到遮罩层
+    });
 </script>
 </body>
 </html>
