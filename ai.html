@@ -2,32 +2,49 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>AI交流</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆包 AI 对话</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #fff;
+        }
+        /* 外层容器：只显示右侧对话区，裁剪左侧栏 */
+        #doubao-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        /* iframe 宽度设为 150%，把左侧栏移出可视区域 */
+        #doubao-iframe {
+            width: 150%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            left: -33.33%; /* 把左侧 1/3 区域（侧边栏）移出屏幕 */
+            top: 0;
+        }
+    </style>
 </head>
 <body>
-<!-- 伪内嵌：点击弹出豆包窗口 -->
-<div style="margin: 20px 0; text-align: center;">
-    <button onclick="openDoubao()" style="padding: 12px 24px; background: #0066ff; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
-        🤖 打开内嵌式豆包 AI
-    </button>
+<div id="doubao-container">
+    <iframe
+            id="doubao-iframe"
+            src="https://www.doubao.com/chat/"
+            allow="microphone; clipboard-read; clipboard-write"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            title="豆包 AI 对话"
+    >
+        你的浏览器不支持内嵌窗口，<a href="https://www.doubao.com/chat/" target="_blank">点击这里访问豆包 AI</a>
+    </iframe>
 </div>
-
-<script>
-    // 弹出固定大小的豆包窗口（伪内嵌）
-    function openDoubao() {
-        // 计算窗口位置（居中显示）
-        const width = 800;
-        const height = 700;
-        const left = (window.screen.width - width) / 2;
-        const top = (window.screen.height - height) / 2;
-
-        // 打开豆包窗口，样式接近内嵌
-        window.open(
-            "https://www.doubao.com/",
-            "doubao-ai",
-            `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
-        );
-    }
-</script>
 </body>
 </html>
