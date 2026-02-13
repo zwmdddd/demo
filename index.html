@@ -159,7 +159,7 @@
 </div>-->
 
 <!-- AI助手按钮-->
-    <button class="ai-assistant-btn" onclick="openDoubaoChat()">
+    <!--<button class="ai-assistant-btn" onclick="openDoubaoChat()">
         <img src="ai.jpg" alt="AI助手">
     </button>
     <div id="chatMask" onclick="closeDoubaoChat()"></div>
@@ -168,7 +168,11 @@
         id="doubaoIframe"
         src="https://www.doubao.com/chat"
         title="AI助手">
-    </iframe>
+    </iframe>-->
+
+<!-- 扣子AI助手按钮-->
+<div id="coze-chat"></div>
+
 
     <h3>1.渝快银网址：<a href="https://znsymerchant.cqfintec.com" target="_blank">跳转</a> </h3>
     <h3>2.嗨客多网址：<a href="https://midoffice.hicooduo.com" target="_blank">跳转</a> </h3>
@@ -221,6 +225,26 @@
     // 防止点击聊天窗口内部触发关闭（关键优化）
     document.getElementById('doubaoIframe').addEventListener('click', function(e) {
         e.stopPropagation(); // 阻止事件冒泡到遮罩层
+    });
+</script>
+
+
+<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+<script>
+    new CozeWebSDK.WebChatClient({
+        config: {
+            bot_id: '7606345252576231439',
+        },
+        componentProps: {
+            title: 'Coze',
+        },
+        auth: {
+            type: 'token',
+            token: 'pat_5KJeuyoE8CHYS9o3VrJ474Fzzu97DjgiIqyGhwbQDnIoZ0HhOzNMpnWVzxp5avXC',
+            onRefreshToken: function () {
+                return 'pat_********'
+            }
+        }
     });
 </script>
 </body>

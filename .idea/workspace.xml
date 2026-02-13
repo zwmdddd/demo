@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6b2eba-6a54-4f98-b78f-ad1651874e22" name="更改" comment="更新">
-      <change afterPath="$PROJECT_DIR$/ai.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doubao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2026_2_2_21_16____.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2026_2_2_21_16_取消提交了更改_[更改]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -34,7 +34,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/zwmdddd/demo.git&quot;,
+    &quot;url&quot;: &quot;git@github.com:zwmdddd/demo.git&quot;,
     &quot;accountId&quot;: &quot;2864f8ae-7815-4087-8aa3-302ca51089af&quot;
   }
 }</component>
@@ -56,10 +56,14 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "DefaultHtmlFileTemplate": "HTML File",
+    "JavaScript 调试.1.html.executor": "Run",
+    "JavaScript 调试.2.html.executor": "Run",
     "JavaScript 调试.ai.html.executor": "Run",
     "JavaScript 调试.aigent.html.executor": "Run",
     "JavaScript 调试.doubao.html.executor": "Run",
     "JavaScript 调试.index.html.executor": "Run",
+    "JavaScript 调试.助手.html.executor": "Run",
+    "JavaScript 调试.抽奖.html.executor": "Run",
     "Python.ai.executor": "Run",
     "Python.check_version.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -109,22 +113,8 @@
       <workItem from="1770604278404" duration="2447000" />
       <workItem from="1770606830201" duration="8545000" />
       <workItem from="1770623680555" duration="4785000" />
-    </task>
-    <task id="LOCAL-00007" summary="更新">
-      <option name="closed" value="true" />
-      <created>1769962842397</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1769962842397</updated>
-    </task>
-    <task id="LOCAL-00008" summary="更新">
-      <option name="closed" value="true" />
-      <created>1769963018502</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1769963018502</updated>
+      <workItem from="1770685847219" duration="5964000" />
+      <workItem from="1770958055415" duration="19073000" />
     </task>
     <task id="LOCAL-00009" summary="更新">
       <option name="closed" value="true" />
@@ -502,7 +492,23 @@
       <option name="project" value="LOCAL" />
       <updated>1770630020200</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="更新">
+      <option name="closed" value="true" />
+      <created>1770650891114</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1770650891114</updated>
+    </task>
+    <task id="LOCAL-00057" summary="更新">
+      <option name="closed" value="true" />
+      <created>1770650946102</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1770650946102</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
