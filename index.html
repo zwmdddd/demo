@@ -175,10 +175,6 @@
         title="AI助手">
     </iframe>-->
 
-<!-- 扣子AI助手按钮-->
-<div id="coze-chat"></div>
-
-
     <h3>1.渝快银网址：<a href="https://znsymerchant.cqfintec.com" target="_blank">跳转</a> </h3>
     <h3>2.嗨客多网址：<a href="https://midoffice.hicooduo.com" target="_blank">跳转</a> </h3>
     <h3>3.58通用驱动：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/58%E5%B0%8F%E7%A5%A8%E6%89%93%E5%8D%B0%E6%9C%BA%E9%80%9A%E7%94%A8%E9%A9%B1%E5%8A%A8.exe" class="download-btn">下载</a></h3>
@@ -214,27 +210,10 @@
         }
     }
 
-    //AI助手功能区
-    // 打开聊天窗口
-    function openDoubaoChat() {
-        document.getElementById('chatMask').style.display = 'block'; // 显示遮罩
-        document.getElementById('doubaoIframe').style.display = 'block'; // 显示聊天窗口
-        document.querySelector('.close-btn').style.display = 'block'; // 显示关闭按钮
-    }
-    // 关闭聊天窗口
-    function closeDoubaoChat() {
-        document.getElementById('chatMask').style.display = 'none'; // 隐藏遮罩
-        document.getElementById('doubaoIframe').style.display = 'none'; // 隐藏聊天窗口
-        document.querySelector('.close-btn').style.display = 'none'; // 隐藏关闭按钮
-    }
-    // 防止点击聊天窗口内部触发关闭（关键优化）
-    document.getElementById('doubaoIframe').addEventListener('click', function(e) {
-        e.stopPropagation(); // 阻止事件冒泡到遮罩层
-    });
 </script>
 
 
-<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+<!--<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>-->
 <script>
     //AI助手官方SDK
     /*new CozeWebSDK.WebChatClient({
