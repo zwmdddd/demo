@@ -158,7 +158,7 @@
     </div>
 </div>-->
 
-<!-- AI助手按钮-->
+<!-- 豆包AI助手按钮-->
     <!--<button class="ai-assistant-btn" onclick="openDoubaoChat()">
         <img src="ai.jpg" alt="AI助手">
     </button>
@@ -231,7 +231,8 @@
 
 <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
 <script>
-    new CozeWebSDK.WebChatClient({
+    //AI助手官方SDK
+    /*new CozeWebSDK.WebChatClient({
         config: {
             bot_id: '7606345252576231439',
         },
@@ -245,6 +246,105 @@
                 return 'pat_********'
             }
         }
+    });*/
+
+    //自定义AI助手SDK
+    new CozeWebSDK.WebChatClient({
+        /**
+         * Agent or app settings
+         * for agent
+         * @param config.bot_id - Agent ID.
+         * for app
+         * @param config.type - To integrate a Coze app, you must set the value to app.
+         * @param config.isIframe - Whether to use the iframe method to open the chat box
+         * @param config.appInfo.appId - AI app ID.
+         * @param config.appInfo.workflowId - Workflow or chatflow ID.
+         */
+        config: {
+            type: 'bot',
+            bot_id: '7606345252576231439',
+            isIframe: false,
+        },
+        /**
+         * The auth property is used to configure the authentication method.
+         * @param type - Authentication method, default type is 'unauth', which means no authentication is required; it is recommended to set it to 'token', which means authentication is done through PAT (Personal Access Token) or OAuth.
+         * @param token - When the type is set to 'token', you need to configure the PAT (Personal Access Token) or OAuth access key.
+         * @param onRefreshToken - When the access key expires, a new key can be set as needed.
+         */
+        auth: {
+            type: 'token',
+            token: 'pat_5KJeuyoE8CHYS9o3VrJ474Fzzu97DjgiIqyGhwbQDnIoZ0HhOzNMpnWVzxp5avXC',
+            onRefreshToken: async () => 'token'
+        },
+        /**
+         * The userInfo parameter is used to set the display of agent user information in the chat box.
+         * @param userInfo.id - ID of the agent user.
+         * @param userInfo.url - URL address of the user's avatar.
+         * @param userInfo.nickname - Nickname of the agent user.
+         */
+        userInfo: {
+            url: '',
+            nickname: 'user',
+        },
+        ui: {
+            /**
+             * The ui.base parameter is used to add the overall UI effect of the chat window.
+             * @param base.icon - Application icon URL.
+             * @param base.layout - Layout style of the agent chat box window, which can be set as 'pc' or'mobile'.
+             * @param base.lang - System language of the agent, which can be set as 'en' or 'zh-CN'.
+             * @param base.zIndex - The z-index of the chat box.
+             */
+            base: {
+                icon: 'ai.jpg',
+
+                layout: 'pc',
+                lang: 'zh-CN',
+                zIndex: 1000
+            },
+            /**
+             * Controls whether to display the top title bar and the close button
+             * @param header.isShow - Whether to display the top title bar.
+             * @param header.isNeedClose - Whether to display the close button.
+             */
+            header: {
+                isShow: true,
+                isNeedClose: true,
+            },
+            /**
+             * Controls whether to display the floating ball at the bottom right corner of the page.
+             */
+            asstBtn: {
+                isNeed: true
+            },
+            /**
+             * The ui.footer parameter is used to add the footer of the chat window.
+             * @param footer.isShow - Whether to display the bottom copy module.
+             * @param footer.expressionText - The text information displayed at the bottom.
+             * @param footer.linkvars - The link copy and link address in the footer.
+             */
+            footer: {
+                isShow: false,
+            },
+            conversations: {
+                isNeed: false,
+            },
+            /**
+             * Control the UI and basic capabilities of the chat box.
+             * @param chatBot.title - The title of the chatbox
+             * @param chatBot.uploadable - Whether file uploading is supported.
+             * @param chatBot.width - The width of the agent window on PC is measured in px, default is 460.
+             * @param chatBot.el - Container for setting the placement of the chat box (Element).
+             */
+            chatBot: {
+                title: 'AI助手',
+                uploadable: true,
+                width: 390,
+                isNeedQuote: true,
+                feedback: {
+                    isNeedFeedback: false,
+                },
+            },
+        },
     });
 </script>
 </body>
