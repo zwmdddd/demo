@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>个人网页</title>
+    <title>个人网站</title>
 
     <!--网站图标-->
     <link rel="icon" href="ai.jpg" type="image/x-icon">
@@ -192,11 +192,11 @@
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/facepay-1.0.5.zip" class="download-btn">安装包(人脸识别版)</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/baidufacedemo.zip" class="download-btn"> 百度人脸识别SDK</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E8%AE%AF%E9%A3%9E%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E9%9F%B3%2B.zip" class="download-btn">讯飞语音</a></h3>
-    <h3>8.。。。（开发中）：<a href="" target="_blank">跳转</a> </h3>
-<script>
+    <h3>8.AI助手：<a href="ai.html" target="_blank">AI助手</a> </h3>
+    <h3>9.更多：开发中<a href="" target="_blank"></a> </h3>
+<!--<script>
     // 登录功能区
     function checkLogin() {
-        // 这里可以替换成你想要的账号密码
         const validUser = "admin";
         const validPwd = "123456";
         const inputUser = document.getElementById('username').value;
@@ -209,11 +209,9 @@
             alert("账号或密码错误，请重试！");
         }
     }
+</script>-->
 
-</script>
-
-
-<!--<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>-->
+<!--<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
 <script>
     //AI助手官方SDK
     /*new CozeWebSDK.WebChatClient({
@@ -234,91 +232,48 @@
 
     //自定义AI助手SDK
     new CozeWebSDK.WebChatClient({
-        /**
-         * Agent or app settings
-         * for agent
-         * @param config.bot_id - Agent ID.
-         * for app
-         * @param config.type - To integrate a Coze app, you must set the value to app.
-         * @param config.isIframe - Whether to use the iframe method to open the chat box
-         * @param config.appInfo.appId - AI app ID.
-         * @param config.appInfo.workflowId - Workflow or chatflow ID.
-         */
         config: {
             type: 'bot',
             bot_id: '7606345252576231439',
             isIframe: false,
         },
-        /**
-         * The auth property is used to configure the authentication method.
-         * @param type - Authentication method, default type is 'unauth', which means no authentication is required; it is recommended to set it to 'token', which means authentication is done through PAT (Personal Access Token) or OAuth.
-         * @param token - When the type is set to 'token', you need to configure the PAT (Personal Access Token) or OAuth access key.
-         * @param onRefreshToken - When the access key expires, a new key can be set as needed.
-         */
+
         auth: {
             type: 'token',
             token: 'pat_5KJeuyoE8CHYS9o3VrJ474Fzzu97DjgiIqyGhwbQDnIoZ0HhOzNMpnWVzxp5avXC',
             onRefreshToken: async () => 'token'
         },
-        /**
-         * The userInfo parameter is used to set the display of agent user information in the chat box.
-         * @param userInfo.id - ID of the agent user.
-         * @param userInfo.url - URL address of the user's avatar.
-         * @param userInfo.nickname - Nickname of the agent user.
-         */
+
         userInfo: {
             id: 'user',
             url: 'user.jpg',
             nickname: 'user',
         },
         ui: {
-            /**
-             * The ui.base parameter is used to add the overall UI effect of the chat window.
-             * @param base.icon - Application icon URL.
-             * @param base.layout - Layout style of the agent chat box window, which can be set as 'pc' or'mobile'.
-             * @param base.lang - System language of the agent, which can be set as 'en' or 'zh-CN'.
-             * @param base.zIndex - The z-index of the chat box.
-             */
+
             base: {
                 icon: 'ai.jpg',
                 layout: 'pc',
                 lang: 'zh-CN',
                 zIndex: 1000
             },
-            /**
-             * Controls whether to display the top title bar and the close button
-             * @param header.isShow - Whether to display the top title bar.
-             * @param header.isNeedClose - Whether to display the close button.
-             */
+
             header: {
                 isShow: true,
                 isNeedClose: true,
             },
-            /**
-             * Controls whether to display the floating ball at the bottom right corner of the page.
-             */
+
             asstBtn: {
                 isNeed: true
             },
-            /**
-             * The ui.footer parameter is used to add the footer of the chat window.
-             * @param footer.isShow - Whether to display the bottom copy module.
-             * @param footer.expressionText - The text information displayed at the bottom.
-             * @param footer.linkvars - The link copy and link address in the footer.
-             */
+
             footer: {
                 isShow: false,
             },
             conversations: {
                 isNeed: false,
             },
-            /**
-             * Control the UI and basic capabilities of the chat box.
-             * @param chatBot.title - The title of the chatbox
-             * @param chatBot.uploadable - Whether file uploading is supported.
-             * @param chatBot.width - The width of the agent window on PC is measured in px, default is 460.
-             * @param chatBot.el - Container for setting the placement of the chat box (Element).
-             */
+
             chatBot: {
                 title: 'AI助手',
                 uploadable: true,
@@ -331,6 +286,6 @@
             },
         },
     });
-</script>
+</script>-->
 </body>
 </html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI助手</title>
+    <!--网站图标-->
+    <link rel="icon" href="ai.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="ai.jpg" type="image/x-icon">
+   <style>
+       #chat-container {
+           position: fixed;
+           top: 0;
+           left: 500px;
+           width: 40vw !important;  /* 视口宽度 */
+           height: 100vh !important; /* 视口高度 */
+           border: none;
+           z-index: 9999;
+       }
+    </style>
+</head>
+<body>
+<div id="chat-container"></div>
+<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        if (typeof CozeWebSDK === 'undefined') {
+            console.error('Coze SDK 加载失败');
+            return;
+        }
+        const chatClient = new CozeWebSDK.WebChatClient({
+        config: {
+            type: 'bot',
+            bot_id: '7606345252576231439',
+            isIframe: false,
+        },
+        auth: {
+            type: 'token',
+            token: 'pat_5KJeuyoE8CHYS9o3VrJ474Fzzu97DjgiIqyGhwbQDnIoZ0HhOzNMpnWVzxp5avXC',
+            onRefreshToken: async () => 'token'
+        },
+        userInfo: {
+            id: 'user',
+            url: 'user.jpg',
+            nickname: 'user',
+        },
+        ui: {
+            base: {
+                icon: 'ai.jpg',
+                layout: 'pc',
+                lang: 'zh-CN',
+                zIndex: 1000
+            },
+            header: {
+                isShow: true,
+                isNeedClose: false,
+            },
+            asstBtn: {
+                isNeed: true
+            },
+            footer: {
+                isShow: false,
+            },
+            conversations: {
+                isNeed: false,
+            },
+            chatBot: {
+                title: 'AI助手',
+                uploadable: true,
+                width: 390,
+                isNeedFunctionCallMessage: false,
+                isNeedQuote: true,
+                feedback: {
+                    isNeedFeedback: false,
+                },
+                el: document.getElementById('chat-container')
+            },
+        },
+    });
+        chatClient.showChatBot();
+    });
+</script>
+</body>
+</html>
