@@ -7,52 +7,15 @@
     <link rel="icon" href="ai.jpg" type="image/x-icon">
     <link rel="shortcut icon" href="ai.jpg" type="image/x-icon">
    <style>
-       /*#chat-container {
-           position: fixed;
-           top: 0;
-           left: 500px;
-           width: 40vw !important;
-           height: 100vh !important;
-           border: none;
-           z-index: 9999;
-       }*/
-
-       * {
-           margin: 0;
-           padding: 0;
-           box-sizing: border-box;
-       }
-       body {
-           overflow: hidden;
-           background-color: #f5f5f5;
-       }
        #chat-container {
            position: fixed;
            top: 0;
-           left: 0;
-           width: 100vw !important;
+           left: 300px;
+           width: 60vw !important;
            height: 100vh !important;
            border: none;
            z-index: 9999;
        }
-       /* 适配不同屏幕尺寸 */
-       @media (max-width: 768px) {
-           #chat-container {
-               width: 100vw !important;
-               height: 100vh !important;
-               left: 0 !important;
-           }
-       }
-       @media (min-width: 769px) {
-           #chat-container {
-               width: 480px !important;
-               height: 100vh !important;
-               left: 50% !important;
-               transform: translateX(-50%);
-               box-shadow: 0 0 20px rgba(0,0,0,0.1);
-           }
-       }
-
     </style>
 </head>
 <body>
@@ -104,7 +67,7 @@
             chatBot: {
                 title: 'AI助手',
                 uploadable: true,
-                width: '100%',
+                width: 390,
                 isNeedFunctionCallMessage: false,
                 isNeedQuote: true,
                 feedback: {
