@@ -7,7 +7,6 @@
     <list default="true" id="0f6b2eba-6a54-4f98-b78f-ad1651874e22" name="更改" comment="更新">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ai.html" beforeDir="false" afterPath="$PROJECT_DIR$/ai.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,15 +120,7 @@
       <workItem from="1772030901950" duration="623000" />
       <workItem from="1772033989702" duration="14000" />
       <workItem from="1772068213992" duration="332000" />
-      <workItem from="1772177998327" duration="592000" />
-    </task>
-    <task id="LOCAL-00018" summary="更新">
-      <option name="closed" value="true" />
-      <created>1770015184109</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1770015184109</updated>
+      <workItem from="1772177998327" duration="945000" />
     </task>
     <task id="LOCAL-00019" summary="更新">
       <option name="closed" value="true" />
@@ -515,7 +506,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772068483340</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="更新">
+      <option name="closed" value="true" />
+      <created>1772178604875</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1772178604876</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
