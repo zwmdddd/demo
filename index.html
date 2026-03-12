@@ -6,7 +6,6 @@
     <!--网站图标-->
     <link rel="icon" href="ai.jpg" type="image/x-icon">
     <link rel="shortcut icon" href="ai.jpg" type="image/x-icon">
-
     <style>
         /* 登录弹窗样式 */
         .login-modal {
@@ -89,7 +88,6 @@
             z-index: 9999;
             padding: 0px; /* 图片内边距 */
         }
-
         /* ai助手图片样式 */
         .ai-assistant-btn img {
             width: 100%;
@@ -97,44 +95,6 @@
             border-radius: 50%;
             object-fit: cover; /* 保证图片比例 */
         }
-        /* AI助手样式 */
-        .doubao-btn {
-            padding: 8px 16px;
-            background-color: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        .doubao-btn:hover {
-            background-color: #4f46e5;
-        }
-        /* 遮罩层：覆盖整个页面，默认隐藏 */
-        #chatMask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.1); /* 半透明遮罩 */
-            z-index: 9998; /* 低于聊天窗口，高于页面内容 */
-            display: none;
-        }
-        /* 聊天窗口样式：固定在右下角，默认隐藏 */
-        #doubaoIframe {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 990px;
-            height: 700px;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 9999; /* 确保在最上层 */
-        }
-        /* 关闭按钮样式 */
         .close-btn {
             position: fixed;
             bottom: 630px;
@@ -152,28 +112,28 @@
     </style>
 </head>
 <body style="background-image: url('bg.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; margin: 0; padding: 0;">
-
     <h3>1.渝快银网址：<a href="https://znsymerchant.cqfintec.com" target="_blank" title="打开新网页">跳转</a> </h3>
     <h3>2.嗨客多网址：<a href="https://midoffice.hicooduo.com" target="_blank" title="打开新网页">跳转</a> </h3>
     <h3>3.58通用驱动：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/58%E5%B0%8F%E7%A5%A8%E6%89%93%E5%8D%B0%E6%9C%BA%E9%80%9A%E7%94%A8%E9%A9%B1%E5%8A%A8.exe" class="download-btn">下载</a></h3>
-    <h3>4.渝银安卓安装包：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/android-pos-restaurant_v2117_release.zip" class="download-btn" title="1-14">餐饮版</a>
+    <h3>4.向日葵：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%90%91%E6%97%A5%E8%91%B5.exe" class="download-btn">下载</a></h3>
+    <h3>5.渝银安卓安装包：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/android-pos-restaurant_v2117_release.zip" class="download-btn" title="1-14">餐饮版</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/android-pos-simplesnack_v2119_release.zip" class="download-btn" title="1-14">商超/一体称版</a>
-        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/android-pos-simplesnack_v2120_release.zip" class="download-btn" title="2-26">平板版</a></h3>
-    <h3>5.渝银Win安装包：
+        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF3-11.zip" class="download-btn" title="2-26">平板版</a></h3>
+    <h3>6.渝银Win安装包：
           <a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/Znsy_Restaurant3.3.14Setup.exe" class="download-btn" title="1-29">餐饮版</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/Znsy_Store3.3.16Setup.exe" class="download-btn" title="1-29">商超版</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/Znsy_Store_Scale3.3.16Setup.exe" class="download-btn" title="1-29">一体称版</a></h3>
-    <h3>6.向日葵：<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%90%91%E6%97%A5%E8%91%B5.exe" class="download-btn">下载</a></h3>
     <h3>7.渝银学校安装包：
-          <a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%86%85%E7%BD%91%E9%99%90%E9%A2%9D.zip" class="download-btn"> 内网限额</a>
-        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%86%85%E7%BD%91%E4%B8%8D%E9%99%90%E9%A2%9D.zip" class="download-btn">内限不限额</a>
-        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%A4%96%E7%BD%91%E9%99%90%E9%A2%9D.zip" class="download-btn"> 外网限额</a>
-        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%A4%96%E7%BD%91%E4%B8%8D%E9%99%90%E9%A2%9D.zip" class="download-btn"> 外网不限额</a></h3>
+          <a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%86%85%E7%BD%91%E9%99%90%E9%A2%9D1.1.0.zip" class="download-btn"> 内网限额</a>
+        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%86%85%E7%BD%91%E4%B8%8D%E9%99%90%E9%A2%9D1.1.0.zip" class="download-btn">内限不限额</a>
+        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%A4%96%E7%BD%91%E9%99%90%E9%A2%9D1.1.0.zip" class="download-btn"> 外网限额</a>
+        &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E5%A4%96%E7%BD%91%E4%B8%8D%E9%99%90%E9%A2%9D1.1.0.zip" class="download-btn"> 外网不限额</a></h3>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/facepay-1.0.5.zip" class="download-btn">安装包(人脸识别版)</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/baidufacedemo.zip" class="download-btn"> 百度人脸识别SDK</a>
         &emsp;<a href="https://zwm-1402111830.cos.ap-chongqing.myqcloud.com/%E8%AE%AF%E9%A3%9E%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E9%9F%B3%2B.zip" class="download-btn">讯飞语音</a></h3>
     <!--<h3>8.AI助手：<a href="ai.html" target="_blank">AI助手</a> </h3>-->
-    <h3>8.上传下载：<a href="file.html" target="_blank">打开</a></h3>
+    <h3>8.网盘下载：<a href="file.html" target="_blank">打开</a></h3>
+    <h3>9.上传下载：<a href="file.html" target="_blank">打开</a></h3>
     <h3>更多(开发中)<a href="" target="_blank"></a> </h3>
 
 <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
