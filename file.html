@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>上传下载</title>
+    <link rel="icon" href="ai.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="ai.jpg" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 15px 20px;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .login-float-btn {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 999;
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .login-float-btn:hover {
+            background: #2980b9;
+        }
+        .logout-float-btn {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 999;
+            padding: 8px 16px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: none;
+        }
+        .logout-float-btn:hover {
+            background: #c0392b;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+        .login-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 20px;
+        }
+        .login-box input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .login-btn {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            width: 100%;
+            margin-top: 8px;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background: #2980b9;
+        }
+        .upload-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        .upload-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+        .file-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+        .custom-file-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-size: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .custom-file-btn:hover {
+            background: #ebf5fb;
+            border-color: #2980b9;
+        }
+        #fileInput {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-list-container {
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* 缩小圆角 */
+            padding: 10px; /* 减少内边距 */
+            min-height: 60px; /* 降低最小高度 */
+        }
+        .file-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px; /* 减少标题下间距 */
+            padding-bottom: 4px; /* 减少下划线间距 */
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .file-list-title {
+            font-size: 13px; /* 缩小字号 */
+            color: #666;
+        }
+        .clear-files-btn {
+            font-size: 12px;
+            color: #e74c3c;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 2px 6px; /* 减少按钮内边距 */
+        }
+        .clear-files-btn:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+        .selected-files {
+            max-height: 120px; /* 降低最大高度 */
+            overflow-y: auto;
+        }
+        .file-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0; /* 大幅减少行内间距 */
+            border-bottom: 1px solid #f8f8f8;
+        }
+        .file-item-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px; /* 缩小字号 */
+            color: #333;
+        }
+        .remove-file-btn {
+            font-size: 12px;
+            color: #e74c3c;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 1px 4px; /* 减少按钮内边距 */
+            border-radius: 4px;
+        }
+        .remove-file-btn:hover {
+            background: #fef0f0;
+        }
+        .no-files-text {
+            text-align: center;
+            color: #999;
+            font-size: 13px; /* 缩小字号 */
+            padding: 8px 0; /* 减少内边距 */
+        }
+        .pwd-input-wrapper {
+            width: 100%;
+            max-width: 500px;
+        }
+        .pwd-input {
+            width: 100%;
+            padding: 10px 12px; /* 减少输入框内边距 */
+            border: 1px solid #ddd;
+            border-radius: 8px; /* 缩小圆角 */
+            font-size: 15px;
+        }
+        .upload-btn {
+            padding: 10px 20px; /* 减少按钮内边距 */
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px; /* 缩小圆角 */
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.3s;
+            width: 100%;
+            max-width: 500px;
+        }
+        .upload-btn:hover {
+            background: #2980b9;
+        }
+        .upload-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        /* 文件列表区域 */
+        .file-list-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px 20px !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        .file-list-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px; /* 减少标题下间距 */
+            font-size: 18px; /* 缩小标题字号 */
+            font-weight: 600;
+            text-align: center;
+        }
+        .file-list {
+            max-height: 265px; /* 降低最大高度 */
+            overflow-y: auto;
+            border-top: 1px solid #ecf0f1;
+            padding-top:10px; /* 减少内边距 */
+            width: 100%;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px; /* 减少内边距 */
+            border-bottom: 1px solid #ecf0f1;
+            border-radius: 8px; /* 缩小圆角 */
+            margin-bottom: 6px; /* 减少行间距 */
+            background: #f8f9fa;
+            transition: background 0.2s;
+        }
+        .file-item:hover {
+            background: #f1f2f6;
+        }
+        .file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+            font-size: 14px; /* 缩小字号 */
+            color: #2c3e50;
+        }
+        .file-actions {
+            display: flex;
+            gap: 8px; /* 减少按钮间距 */
+        }
+        .download-link {
+            color: #27ae60;
+            cursor: pointer;
+            font-weight: 500;
+            padding: 4px 8px; /* 减少按钮内边距 */
+            font-size: 13px; /* 缩小字号 */
+            border-radius: 6px;
+            border: 1px solid #27ae60;
+            transition: all 0.3s;
+        }
+        .download-link:hover {
+            background: #27ae60;
+            color: white;
+        }
+        .delete-link {
+            color: #e74c3c;
+            cursor: pointer;
+            font-weight: 500;
+            padding: 4px 8px; /* 减少按钮内边距 */
+            font-size: 13px; /* 缩小字号 */
+            border-radius: 6px;
+            border: 1px solid #e74c3c;
+            transition: all 0.3s;
+            display: none;
+        }
+        .delete-link:hover {
+            background: #e74c3c;
+            color: white;
+        }
+        /* 密码弹窗 */
+        .pwd-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            display: none;
+        }
+        .pwd-box {
+            background: white;
+            padding: 20px; /* 减少弹窗内边距 */
+            border-radius: 10px; /* 缩小圆角 */
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 320px; /* 缩小弹窗宽度 */
+        }
+        .pwd-box h4 {
+            margin-bottom: 12px; /* 减少标题下间距 */
+            color: #2c3e50;
+            text-align: center;
+            font-size: 16px; /* 缩小字号 */
+        }
+        .pwd-box input {
+            padding: 10px 12px; /* 减少输入框内边距 */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 12px; /* 减少输入框下间距 */
+            font-size: 15px;
+        }
+        .pwd-btns {
+            display: flex;
+            gap: 8px; /* 减少按钮间距 */
+            justify-content: center;
+        }
+        .confirm-btn, .cancel-btn {
+            padding: 8px 16px; /* 减少按钮内边距 */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px; /* 缩小字号 */
+        }
+        .confirm-btn {
+            background: #27ae60;
+            color: white;
+        }
+        .confirm-btn:hover {
+            background: #219653;
+        }
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .cancel-btn:hover {
+            background: #c0392b;
+        }
+        /* 进度条 */
+        .progress-bar {
+            height: 6px; /* 降低进度条高度 */
+            background: #ecf0f1;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px; /* 减少上间距 */
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+        .progress {
+            height: 100%;
+            background: #27ae60;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        /* 提示信息 */
+        .empty-tip {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 15px 0; /* 减少内边距 */
+            font-size: 14px; /* 缩小字号 */
+        }
+    </style>
+</head>
+<body>
+<button class="login-float-btn" id="loginEntryBtn" onclick="openLoginModal()">登录</button>
+<button class="logout-float-btn" id="logoutBtn" onclick="adminLogout()">退出登录</button>
+
+<div class="login-modal" id="loginModal">
+    <div class="login-box">
+        <h2>管理员登录</h2>
+        <input type="text" id="adminUser" placeholder="请输入账号">
+        <input type="password" id="adminPwd" placeholder="请输入密码">
+        <button class="login-btn" onclick="adminLogin()">登录</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="upload-section" id="uploadSection">
+        <h3>文件上传</h3>
+        <div class="upload-area">
+            <div class="file-select-wrapper">
+                <label class="custom-file-btn">点击选择文件
+                    <input type="file" id="fileInput" multiple>
+                </label>
+            </div>
+
+            <div class="file-list-container">
+                <div class="file-list-header">
+                    <span class="file-list-title">已选择文件</span>
+                    <button class="clear-files-btn" id="clearFilesBtn" onclick="clearAllFiles()" disabled>清空所有</button>
+                </div>
+                <div class="selected-files" id="selectedFilesList">
+                    <div class="no-files-text">未选择文件</div>
+                </div>
+            </div>
+
+            <div class="pwd-input-wrapper">
+                <input type="text" id="uploadPwd" class="pwd-input" placeholder="提取密码（选填）">
+            </div>
+            <button id="uploadBtn" class="upload-btn" onclick="uploadToCloud()" disabled>上传文件</button>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文件列表区域 -->
+    <div class="file-list-section" id="fileListSection">
+        <h3>文件列表</h3>
+        <div class="file-list" id="fileList">
+            <div class="empty-tip">暂无文件，请先上传</div>
+        </div>
+    </div>
+</div>
+
+<div class="pwd-modal" id="pwdModal">
+    <div class="pwd-box">
+        <h4>请输入提取密码</h4>
+        <input type="password" id="inputPwd" placeholder="无密码直接点确认">
+        <div class="pwd-btns">
+            <button class="confirm-btn" onclick="checkPwd()">确认</button>
+            <button class="cancel-btn" onclick="closePwdModal()">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js"></script>
+<script>
+    const Bucket = "zwm-1402111830";
+    const Region = "ap-chongqing";
+    const SecretId = "AKIDqo4Kd8hATioqeL2f9YvIUciiibJxc9Sa";
+    const SecretKey = "6A7tgq2Kbv9NQFLNKIIRgq16OevyAQah";
+    const ADMIN_CRED = {
+        user: "admin",
+        pwd: "admin"
+    };
+    const cos = new COS({
+        SecretId: SecretId,
+        SecretKey: SecretKey
+    });
+    let isAdminLogin = false;
+    let currentDownloadFile = null;
+    let selectedFiles = [];
+
+    window.onload = function () {
+        loadCloudFiles();
+        // 监听文件选择
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                Array.from(e.target.files).forEach(file => {
+                    const isDuplicate = selectedFiles.some(f =>
+                        f.name === file.name && f.size === file.size && f.lastModified === file.lastModified
+                    );
+                    if (!isDuplicate) {
+                        selectedFiles.push(file);
+                    }
+                });
+                updateFileListDisplay();
+                document.getElementById('uploadBtn').disabled = false;
+                document.getElementById('clearFilesBtn').disabled = false;
+                e.target.value = '';
+            }
+        });
+    };
+    function updatePageLayout() {
+        const uploadSection = document.getElementById('uploadSection');
+        const fileListSection = document.getElementById('fileListSection');
+
+        if (isAdminLogin) {
+            uploadSection.style.display = 'none';
+            document.querySelector('.container').style.gap = '10px';
+        } else {
+            uploadSection.style.display = 'block';
+            document.querySelector('.container').style.gap = '15px';
+        }
+    }
+    // 5. 更新文件列表显示
+    function updateFileListDisplay() {
+        const fileListEl = document.getElementById('selectedFilesList');
+        if (selectedFiles.length === 0) {
+            fileListEl.innerHTML = '<div class="no-files-text">未选择文件</div>';
+            return;
+        }
+
+        let html = '';
+        selectedFiles.forEach((file, index) => {
+            html += `
+                <div class="file-item-row" data-index="${index}">
+                    <span class="file-item-name">${file.name}</span>
+                    <button class="remove-file-btn" onclick="removeFile(${index})">删除</button>
+                </div>
+            `;
+        });
+        fileListEl.innerHTML = html;
+    }
+
+    // 6. 移除单个文件
+    function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        updateFileListDisplay();
+        if (selectedFiles.length === 0) {
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('clearFilesBtn').disabled = true;
+        }
+    }
+
+    function clearAllFiles() {
+        if (confirm('确定要清空所有已选择的文件吗？')) {
+            selectedFiles = [];
+            updateFileListDisplay();
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('clearFilesBtn').disabled = true;
+        }
+    }
+    function openLoginModal() {
+        document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    // 9. 管理员登录
+    function adminLogin() {
+        const user = document.getElementById('adminUser').value.trim();
+        const pwd = document.getElementById('adminPwd').value.trim();
+        if (user !== ADMIN_CRED.user || pwd !== ADMIN_CRED.pwd) {
+            alert('账号或密码错误！');
+            return;
+        }
+        isAdminLogin = true;
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('loginEntryBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'block';
+        updatePageLayout();
+        loadCloudFiles();
+        alert('登录成功！');
+    }
+
+    function adminLogout() {
+        if (confirm('确定退出？')) {
+            isAdminLogin = false;
+            document.getElementById('loginEntryBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            updatePageLayout();
+            loadCloudFiles();
+        }
+    }
+
+    async function uploadToCloud() {
+        const pwdInput = document.getElementById('uploadPwd');
+        const btn = document.getElementById('uploadBtn');
+        const progress = document.getElementById('progress');
+        const bar = document.getElementById('progressBar');
+        const pwd = pwdInput.value.trim() || '';
+
+        if (selectedFiles.length === 0) {
+            alert('请选择文件！');
+            return;
+        }
+
+        btn.disabled = true;
+        bar.style.display = 'block';
+        progress.style.width = '0%';
+
+        try {
+            const totalFiles = selectedFiles.length;
+            let uploadedFiles = 0;
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const key = `public-share/${pwd}_${Date.now()}_${file.name}`;
+                await cos.putObject({
+                    Bucket, Region, Key: key, Body: file,
+                    onProgress: (p) => {
+                        const overallProgress = (uploadedFiles + p.percent) / totalFiles * 100;
+                        progress.style.width = Math.round(overallProgress) + '%';
+                    }
+                });
+                uploadedFiles++;
+            }
+
+            alert(`上传成功！共上传 ${totalFiles} 个文件`);
+            selectedFiles = [];
+            updateFileListDisplay();
+            pwdInput.value = '';
+            document.getElementById('clearFilesBtn').disabled = true;
+            loadCloudFiles();
+        } catch (err) {
+            console.error(err);
+            alert('上传失败');
+        } finally {
+            bar.style.display = 'none';
+            progress.style.width = '0%';
+            // 如果还有文件没上传完，重新启用上传按钮
+            if (selectedFiles.length > 0) {
+                btn.disabled = false;
+            }
+        }
+    }
+    // 12. 加载文件列表
+    async function loadCloudFiles() {
+        const listEl = document.getElementById('fileList');
+        try {
+            const data = await cos.getBucket({
+                Bucket, Region, Prefix: 'public-share/'
+            });
+            listEl.innerHTML = '';
+            if (!data.Contents || data.Contents.length === 0) {
+                listEl.innerHTML = '<div class="empty-tip">暂无文件</div>';
+                return;
+            }
+            data.Contents.forEach(item => {
+                const full = item.Key.replace('public-share/', '');
+                const underIdx = full.indexOf('_');
+                const pwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
+                const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
+                const fileName = rest.split('_').slice(1).join('_') || rest;
+
+                const div = document.createElement('div');
+                div.className = 'file-item';
+                div.innerHTML = `
+                    <span class="file-name">${fileName}</span>
+                    <div class="file-actions">
+                        <span class="download-link" onclick="openPwdModal('${item.Key}', '${fileName}')">下载</span>
+                        <span class="delete-link" onclick="deleteFile('${item.Key}')">删除</span>
+                    </div>
+                `;
+                listEl.appendChild(div);
+                if (isAdminLogin) {
+                    div.querySelector('.delete-link').style.display = 'inline-block';
+                }
+            });
+        } catch (e) {
+            listEl.innerHTML = '<div class="empty-tip">加载失败</div>';
+        }
+    }
+
+    // 13. 打开下载密码框
+    function openPwdModal(key, name) {
+        currentDownloadFile = { key, name };
+        document.getElementById('pwdModal').style.display = 'flex';
+        document.getElementById('inputPwd').value = '';
+    }
+
+    function closePwdModal() {
+        document.getElementById('pwdModal').style.display = 'none';
+        currentDownloadFile = null;
+    }
+
+    // 14. 验证密码并下载
+    async function checkPwd() {
+        const inputPwd = document.getElementById('inputPwd').value.trim() || '';
+        if (!currentDownloadFile) return;
+        const key = currentDownloadFile.key;
+        const full = key.replace('public-share/', '');
+        const underIdx = full.indexOf('_');
+        const correctPwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
+
+        if (inputPwd !== correctPwd) {
+            alert('密码错误！');
+            return;
+        }
+        try {
+            const url = cos.getObjectUrl({
+                Bucket, Region, Key: key, Expires: 3600
+            });
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentDownloadFile.name;
+            a.click();
+            closePwdModal();
+        } catch (e) {
+            alert('下载失败');
+        }
+    }
+    // 15. 删除文件
+    async function deleteFile(key) {
+        if (!isAdminLogin) {
+            alert('请先管理员登录');
+            openLoginModal();
+            return;
+        }
+        if (!confirm('确定删除？')) return;
+        try {
+            await cos.deleteObject({ Bucket, Region, Key: key });
+            alert('删除成功');
+            loadCloudFiles();
+        } catch (e) {
+            alert('删除失败');
+        }
+    }
+</script>
+</body>
+</html>
