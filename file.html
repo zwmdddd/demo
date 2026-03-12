@@ -431,15 +431,35 @@
             padding: 15px 0; /* 减少内边距 */
             font-size: 14px; /* 缩小字号 */
         }
+        /*返回按钮样式*/
+         .home-btn {
+             position: fixed;
+             top: 15px;
+             left: 20px;
+             z-index: 999;
+             padding: 8px 16px;
+             background: #27ae60;
+             color: white;
+             border: none;
+             border-radius: 6px;
+             cursor: pointer;
+             transition: background 0.3s;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+             font-size: 14px;
+         }
+        .home-btn:hover {
+            background: #219653;
+        }
     </style>
 </head>
 <body>
+<button class="home-btn" onclick="location.href='index.html'">返回</button>
 <button class="login-float-btn" id="loginEntryBtn" onclick="openLoginModal()">登录</button>
 <button class="logout-float-btn" id="logoutBtn" onclick="adminLogout()">退出登录</button>
 
 <div class="login-modal" id="loginModal">
     <div class="login-box">
-        <h2>管理员登录</h2>
+        <h2>登录</h2>
         <input type="text" id="adminUser" placeholder="请输入账号">
         <input type="password" id="adminPwd" placeholder="请输入密码">
         <button class="login-btn" onclick="adminLogin()">登录</button>
