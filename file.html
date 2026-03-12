@@ -665,6 +665,43 @@
             }
         }
     }
+
+    async function loadCloudFiles() {
+        const listEl = document.getElementById('fileList');
+        try {
+            const data = await cos.getBucket({
+                Bucket, Region, Prefix: 'public-share/'
+            });
+            listEl.innerHTML = '';
+            if (!data.Contents || data.Contents.length === 0) {
+                listEl.innerHTML = '<div class="empty-tip">暂无文件</div>';
+                return;
+            }
+            data.Contents.forEach(item => {
+                const full = item.Key.replace('public-share/', '');
+                const underIdx = full.indexOf('_');
+                const pwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
+                const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
+                const fileName = rest.split('_').slice(1).join('_') || rest;
+
+                const div = document.createElement('div');
+                div.className = 'file-item';
+                div.innerHTML = `
+                    <span class="file-name">${fileName}</span>
+                    <div class="file-actions">
+                        <span class="download-link" onclick="openPwdModal('${item.Key}', '${fileName}')">下载</span>
+                        <span class="delete-link" onclick="deleteFile('${item.Key}')">删除</span>
+                    </div>
+                `;
+                listEl.appendChild(div);
+                if (isAdminLogin) {
+                    div.querySelector('.delete-link').style.display = 'inline-block';
+                }
+            });
+        } catch (e) {
+            listEl.innerHTML = '<div class="empty-tip">加载失败</div>';
+        }
+    }
     // 12. 加载文件列表
     console.log('COS 返回的原始文件列表：', data.Contents); // 查看是否有异常项
 
