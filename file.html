@@ -673,11 +673,30 @@
                 Bucket, Region, Prefix: 'public-share/'
             });
             listEl.innerHTML = '';
-            if (!data.Contents || data.Contents.length === 0) {
+
+            // 第一步：过滤掉无效/空的文件项
+            const validFiles = (data.Contents || []).filter(item => {
+                // 1. 确保 item 和 Key 存在
+                if (!item || !item.Key) return false;
+                // 2. 确保 Key 不是空字符串，且包含 public-share/ 前缀
+                const key = item.Key.trim();
+                if (!key || !key.startsWith('public-share/')) return false;
+                // 3. 确保能解析出有效的文件名
+                const full = key.replace('public-share/', '');
+                const underIdx = full.indexOf('_');
+                const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
+                const fileName = rest.split('_').slice(1).join('_') || rest;
+                return !!fileName.trim(); // 文件名非空才保留
+            });
+
+            // 第二步：判断有效文件数量
+            if (validFiles.length === 0) {
                 listEl.innerHTML = '<div class="empty-tip">暂无文件</div>';
                 return;
             }
-            data.Contents.forEach(item => {
+
+            // 第三步：只渲染有效文件
+            validFiles.forEach(item => {
                 const full = item.Key.replace('public-share/', '');
                 const underIdx = full.indexOf('_');
                 const pwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
@@ -687,18 +706,19 @@
                 const div = document.createElement('div');
                 div.className = 'file-item';
                 div.innerHTML = `
-                    <span class="file-name">${fileName}</span>
-                    <div class="file-actions">
-                        <span class="download-link" onclick="openPwdModal('${item.Key}', '${fileName}')">下载</span>
-                        <span class="delete-link" onclick="deleteFile('${item.Key}')">删除</span>
-                    </div>
-                `;
+                <span class="file-name">${fileName}</span>
+                <div class="file-actions">
+                    <span class="download-link" onclick="openPwdModal('${item.Key}', '${fileName}')">下载</span>
+                    <span class="delete-link" onclick="deleteFile('${item.Key}')">删除</span>
+                </div>
+            `;
                 listEl.appendChild(div);
                 if (isAdminLogin) {
                     div.querySelector('.delete-link').style.display = 'inline-block';
                 }
             });
         } catch (e) {
+            console.error('加载文件列表失败：', e); // 新增：打印错误日志，方便排查
             listEl.innerHTML = '<div class="empty-tip">加载失败</div>';
         }
     }
