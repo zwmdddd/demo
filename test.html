@@ -432,21 +432,21 @@
             font-size: 14px; /* 缩小字号 */
         }
         /*返回按钮样式*/
-         .home-btn {
-             position: fixed;
-             top: 15px;
-             left: 20px;
-             z-index: 999;
-             padding: 8px 16px;
-             background: #27ae60;
-             color: white;
-             border: none;
-             border-radius: 6px;
-             cursor: pointer;
-             transition: background 0.3s;
-             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-             font-size: 14px;
-         }
+        .home-btn {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 999;
+            padding: 8px 16px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 14px;
+        }
         .home-btn:hover {
             background: #219653;
         }
@@ -468,7 +468,7 @@
 
 <div class="container">
     <div class="upload-section" id="uploadSection">
-        <h3>文件上传（不支持.apk下载）</h3>
+        <h3>文件上传</h3>
         <div class="upload-area">
             <div class="file-select-wrapper">
                 <label class="custom-file-btn">点击选择文件
@@ -518,10 +518,12 @@
 
 <script src="https://unpkg.com/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js"></script>
 <script>
-    const Bucket = "zwm-1402111830";
-    const Region = "ap-chongqing";
+    const Bucket = "zwmwebfile-1402111830";
+    const Region = "ap-hongkong";
     const SecretId = "AKIDqo4Kd8hATioqeL2f9YvIUciiibJxc9Sa";
     const SecretKey = "6A7tgq2Kbv9NQFLNKIIRgq16OevyAQah";
+    // 新增：自定义域名配置（关键！）
+    const CUSTOM_DOMAIN = "https://oss.8975612.xyz";
     const ADMIN_CRED = {
         user: "admin",
         pwd: "admin"
@@ -566,7 +568,7 @@
             document.querySelector('.container').style.gap = '15px';
         }
     }
-    // 5. 更新文件列表显示
+    // 更新文件列表显示
     function updateFileListDisplay() {
         const fileListEl = document.getElementById('selectedFilesList');
         if (selectedFiles.length === 0) {
@@ -586,7 +588,7 @@
         fileListEl.innerHTML = html;
     }
 
-    // 6. 移除单个文件
+    // 移除单个文件
     function removeFile(index) {
         selectedFiles.splice(index, 1);
         updateFileListDisplay();
@@ -608,7 +610,7 @@
         document.getElementById('loginModal').style.display = 'flex';
     }
 
-    // 9. 管理员登录
+    // 管理员登录
     function adminLogin() {
         const user = document.getElementById('adminUser').value.trim();
         const pwd = document.getElementById('adminPwd').value.trim();
@@ -656,7 +658,7 @@
             let uploadedFiles = 0;
             for (let i = 0; i < selectedFiles.length; i++) {
                 const file = selectedFiles[i];
-                const key = `public-share/${pwd}_${Date.now()}_${file.name}`;
+                const key = `public-share/${file.name}`;
                 await cos.putObject({
                     Bucket, Region, Key: key, Body: file,
                     onProgress: (p) => {
@@ -694,28 +696,24 @@
             });
             listEl.innerHTML = '';
 
-            // 第一步：过滤掉无效/空的文件项
+            // 过滤无效文件
             const validFiles = (data.Contents || []).filter(item => {
-                // 1. 确保 item 和 Key 存在
                 if (!item || !item.Key) return false;
-                // 2. 确保 Key 不是空字符串，且包含 public-share/ 前缀
                 const key = item.Key.trim();
                 if (!key || !key.startsWith('public-share/')) return false;
-                // 3. 确保能解析出有效的文件名
                 const full = key.replace('public-share/', '');
                 const underIdx = full.indexOf('_');
                 const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
                 const fileName = rest.split('_').slice(1).join('_') || rest;
-                return !!fileName.trim(); // 文件名非空才保留
+                return !!fileName.trim();
             });
 
-            // 第二步：判断有效文件数量
             if (validFiles.length === 0) {
                 listEl.innerHTML = '<div class="empty-tip">暂无文件</div>';
                 return;
             }
 
-            // 第三步：只渲染有效文件
+            // 渲染有效文件
             validFiles.forEach(item => {
                 const full = item.Key.replace('public-share/', '');
                 const underIdx = full.indexOf('_');
@@ -738,14 +736,12 @@
                 }
             });
         } catch (e) {
-            console.error('加载文件列表失败：', e); // 新增：打印错误日志，方便排查
+            console.error('加载文件列表失败：', e);
             listEl.innerHTML = '<div class="empty-tip">加载失败</div>';
         }
     }
-    // 12. 加载文件列表
-    console.log('COS 返回的原始文件列表：', data.Contents); // 查看是否有异常项
 
-    // 13. 打开下载密码框
+    // 打开下载密码框
     function openPwdModal(key, name) {
         currentDownloadFile = { key, name };
         document.getElementById('pwdModal').style.display = 'flex';
@@ -757,7 +753,7 @@
         currentDownloadFile = null;
     }
 
-    // 14. 验证密码并下载
+    // 🔥 核心修改：验证密码并下载（改用自定义域名）
     async function checkPwd() {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
         if (!currentDownloadFile) return;
@@ -771,19 +767,27 @@
             return;
         }
         try {
-            const url = cos.getObjectUrl({
-                Bucket, Region, Key: key, Expires: 3600
-            });
+            // 替换为自定义域名直链，绕过 DownloadForbidden 限制
+            const encodedKey = encodeURIComponent(key); // 编码特殊字符
+            const downloadUrl = `${CUSTOM_DOMAIN}/${encodedKey}`;
+
+            // 强制浏览器下载
             const a = document.createElement('a');
-            a.href = url;
+            a.href = downloadUrl;
             a.download = currentDownloadFile.name;
+            a.target = '_blank';
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
+
             closePwdModal();
         } catch (e) {
-            alert('下载失败');
+            console.error('下载失败：', e);
+            alert('下载失败，请右键链接选择「另存为」保存');
         }
     }
-    // 15. 删除文件
+
+    // 删除文件
     async function deleteFile(key) {
         if (!isAdminLogin) {
             alert('请先管理员登录');
