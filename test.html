@@ -658,7 +658,8 @@
             let uploadedFiles = 0;
             for (let i = 0; i < selectedFiles.length; i++) {
                 const file = selectedFiles[i];
-                const key = `public-share/${file.name}`;
+                // 上传时将密码拼接到文件名前
+                const key = pwd ? `public-share/${pwd}_${file.name}` : `public-share/${file.name}`;
                 await cos.putObject({
                     Bucket, Region, Key: key, Body: file,
                     onProgress: (p) => {
@@ -702,10 +703,7 @@
                 const key = item.Key.trim();
                 if (!key || !key.startsWith('public-share/')) return false;
                 const full = key.replace('public-share/', '');
-                const underIdx = full.indexOf('_');
-                const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
-                const fileName = rest.split('_').slice(1).join('_') || rest;
-                return !!fileName.trim();
+                return !!full.trim();
             });
 
             if (validFiles.length === 0) {
@@ -718,8 +716,8 @@
                 const full = item.Key.replace('public-share/', '');
                 const underIdx = full.indexOf('_');
                 const pwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
-                const rest = underIdx >= 0 ? full.substring(underIdx + 1) : full;
-                const fileName = rest.split('_').slice(1).join('_') || rest;
+                // 正确解析文件名
+                const fileName = underIdx >= 0 ? full.substring(underIdx + 1) : full;
 
                 const div = document.createElement('div');
                 div.className = 'file-item';
@@ -753,7 +751,7 @@
         currentDownloadFile = null;
     }
 
-    // 🔥 核心修改：验证密码并下载（改用自定义域名）
+    // 核心修复：验证密码并强制下载文件
     async function checkPwd() {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
         if (!currentDownloadFile) return;
@@ -766,16 +764,23 @@
             alert('密码错误！');
             return;
         }
-        try {
-            // 替换为自定义域名直链，绕过 DownloadForbidden 限制
-            const encodedKey = encodeURIComponent(key); // 编码特殊字符
-            const downloadUrl = `${CUSTOM_DOMAIN}/${encodedKey}`;
 
-            // 强制浏览器下载
+        try {
+            // 方案1：优先使用COS SDK获取下载链接（带强制下载参数）
+            const downloadUrl = await cos.getObjectUrl({
+                Bucket,
+                Region,
+                Key: key,
+                Sign: true,
+                Expires: 300, // 链接有效期5分钟
+                ResponseContentDisposition: `attachment; filename="${encodeURIComponent(currentDownloadFile.name)}"`
+            });
+
+            // 创建下载链接并触发下载
             const a = document.createElement('a');
             a.href = downloadUrl;
             a.download = currentDownloadFile.name;
-            a.target = '_blank';
+            a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -783,7 +788,35 @@
             closePwdModal();
         } catch (e) {
             console.error('下载失败：', e);
-            alert('下载失败，请右键链接选择「另存为」保存');
+            // 方案2：备用方案 - 通过fetch获取blob后下载
+            try {
+                const encodedKey = encodeURIComponent(key);
+                const url = `${CUSTOM_DOMAIN}/${encodedKey}`;
+
+                // 获取文件blob数据
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('文件获取失败');
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                // 创建下载链接
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = currentDownloadFile.name;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+
+                // 清理资源
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+
+                closePwdModal();
+            } catch (err) {
+                console.error('备用下载方案也失败：', err);
+                alert('下载失败，请右键链接选择「另存为」保存');
+            }
         }
     }
 
