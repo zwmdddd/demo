@@ -782,7 +782,7 @@
         currentDownloadFile = null;
     };
 
-    // ========== 核心：分存储桶下载文件（强制重命名+强制下载） ==========
+    // 验证密码并下载（极速版：直接触发下载，保留纯文件名）
     const checkPwd = async () => {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
 
@@ -810,17 +810,17 @@
         const bucketConfig = isApkBucket ? BUCKET2 : BUCKET1;
 
         try {
-            // ========== 终极方案：强制下载+纯文件名 ==========
-            // 1. 解析纯文件名（去掉密码/时间戳）
+            // ========== 1. 解析纯文件名 ==========
             let pureFileName = full.split('_').pop() || name;
-            // 2. 获取文件URL
+
+            // ========== 2. 获取下载链接 ==========
             let downloadUrl = '';
             if (isApkBucket) {
-                // APK文件使用自定义域名
+                // APK文件：使用自定义域名直链
                 const encodedKey = encodeURIComponent(key);
                 downloadUrl = `${bucketConfig.domain}/${encodedKey}`;
             } else {
-                // 非APK文件使用COS临时URL
+                // 非APK文件：获取COS临时签名链接
                 downloadUrl = await cosInstance.getObjectUrl({
                     Bucket: bucketConfig.name,
                     Region: bucketConfig.region,
@@ -829,54 +829,20 @@
                 });
             }
 
-            // 3. 强制下载（Blob方案，无视浏览器默认行为）
-            const response = await fetch(downloadUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/octet-stream'
-                }
-            });
-
-            if (!response.ok) throw new Error(`下载失败：${response.status}`);
-
-            // 4. 转为Blob并强制下载
-            const blob = await response.blob();
-            const blobUrl = URL.createObjectURL(blob);
-
+            // ========== 3. 直接触发下载（最快方式） ==========
             const a = document.createElement('a');
-            a.href = blobUrl;
+            a.href = downloadUrl;
             a.download = pureFileName; // 强制纯文件名
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
-
-            // 5. 清理资源
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(blobUrl);
-            }, 100);
+            document.body.removeChild(a);
 
             closePwdModal();
-            alert(`开始下载：${pureFileName}`);
-        } catch (fetchErr) {
-            console.error('下载失败：', fetchErr);
-            // 兜底方案：直接打开链接
-            let fallbackUrl = '';
-            if (isApkBucket) {
-                const encodedKey = encodeURIComponent(key);
-                fallbackUrl = `${bucketConfig.domain}/${encodedKey}`;
-            } else {
-                fallbackUrl = await cosInstance.getObjectUrl({
-                    Bucket: bucketConfig.name,
-                    Region: bucketConfig.region,
-                    Key: key,
-                    Expires: 3600
-                });
-            }
-            if (confirm('自动下载失败，是否跳转到文件页面手动保存？')) {
-                window.open(fallbackUrl, '_blank');
-            }
+            console.log('开始下载：', pureFileName);
+        } catch (err) {
+            console.error('下载失败：', err);
+            alert('下载失败，请右键下载按钮选择「另存为」手动保存');
             closePwdModal();
         }
     };
@@ -900,8 +866,6 @@
                 Region: bucketConfig.region,
                 Key: key
             });
-
-            alert('删除成功');
             loadAllCloudFiles();
         } catch (e) {
             console.error('删除失败：', e);
