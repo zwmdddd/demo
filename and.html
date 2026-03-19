@@ -463,7 +463,7 @@
 
 <div class="container">
     <div class="upload-section" id="uploadSection">
-        <h3>文件上传（支持所有格式下载）</h3>
+        <h3>文件上传</h3>
         <div class="upload-area">
             <div class="file-select-wrapper">
                 <label class="custom-file-btn">点击选择文件
@@ -512,13 +512,10 @@
 
 <script src="https://unpkg.com/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js"></script>
 <script>
-    // ========== 存储桶配置（核心区分） ==========
-    // 存储桶1：非APK文件（重庆地域）
     const BUCKET1 = {
         name: "zwm-1402111830",
         region: "ap-chongqing"
     };
-    // 存储桶2：APK文件（香港地域 + 自定义域名）
     const BUCKET2 = {
         name: "zwmwebfile-1402111830",
         region: "ap-hongkong",
@@ -527,27 +524,19 @@
     const SecretId = "AKIDqo4Kd8hATioqeL2f9YvIUciiibJxc9Sa";
     const SecretKey = "6A7tgq2Kbv9NQFLNKIIRgq16OevyAQah";
     const ADMIN_CRED = { user: "admin", pwd: "admin" };
-
-    // 创建两个COS实例（区分存储桶）
     const cos1 = new COS({ SecretId, SecretKey }); // 存储桶1
     const cos2 = new COS({ SecretId, SecretKey }); // 存储桶2
-
     let isAdminLogin = false;
     let currentDownloadFile = null;
     let selectedFiles = [];
-
-    // ========== 工具函数：判断是否为APK文件 ==========
     const isApkFile = (fileName) => {
         return fileName.toLowerCase().endsWith('.apk');
     };
-
-    // ========== 初始化 ==========
     window.onload = () => {
         loadAllCloudFiles(); // 加载所有存储桶的文件
         document.getElementById('fileInput').addEventListener('change', handleFileSelect);
     };
 
-    // ========== 页面布局控制 ==========
     const updatePageLayout = () => {
         const uploadSection = document.getElementById('uploadSection');
         const container = document.querySelector('.container');
@@ -560,7 +549,6 @@
         }
     };
 
-    // ========== 文件选择处理 ==========
     const handleFileSelect = (e) => {
         if (!e.target.files.length) return;
         Array.from(e.target.files).forEach(file => {
@@ -575,7 +563,6 @@
         e.target.value = '';
     };
 
-    // ========== 更新已选文件列表 ==========
     const updateFileListDisplay = () => {
         const fileListEl = document.getElementById('selectedFilesList');
         if (!selectedFiles.length) {
@@ -590,7 +577,6 @@
         `).join('');
     };
 
-    // ========== 移除单个文件 ==========
     const removeFile = (index) => {
         selectedFiles.splice(index, 1);
         updateFileListDisplay();
@@ -600,7 +586,6 @@
         }
     };
 
-    // ========== 清空所有文件 ==========
     const clearAllFiles = () => {
         if (!confirm('确定要清空所有已选择的文件吗？')) return;
         selectedFiles = [];
@@ -609,11 +594,9 @@
         document.getElementById('clearFilesBtn').disabled = true;
     };
 
-    // ========== 登录/登出 ==========
     const openLoginModal = () => {
         document.getElementById('loginModal').style.display = 'flex';
     };
-
     const adminLogin = () => {
         const user = document.getElementById('adminUser').value.trim();
         const pwd = document.getElementById('adminPwd').value.trim();
@@ -628,7 +611,6 @@
         updatePageLayout();
         loadAllCloudFiles();
     };
-
     const adminLogout = () => {
         if (!confirm('确定退出？')) return;
         isAdminLogin = false;
@@ -638,34 +620,28 @@
         loadAllCloudFiles();
     };
 
-    // ========== 核心：分存储桶上传文件 ==========
+    //分存储桶上传文件
     const uploadToCloud = async () => {
         const pwdInput = document.getElementById('uploadPwd');
         const btn = document.getElementById('uploadBtn');
         const progress = document.getElementById('progress');
         const bar = document.getElementById('progressBar');
         const pwd = pwdInput.value.trim() || '';
-
         if (!selectedFiles.length) {
             alert('请选择文件！');
             return;
         }
-
         btn.disabled = true;
         bar.style.display = 'block';
         progress.style.width = '0%';
-
         try {
             const totalFiles = selectedFiles.length;
             let uploadedFiles = 0;
-
-            // 按文件类型分存储桶上传
             for (const file of selectedFiles) {
                 const isApk = isApkFile(file.name);
                 const cosInstance = isApk ? cos2 : cos1;
                 const bucketConfig = isApk ? BUCKET2 : BUCKET1;
                 const key = `public-share/${pwd}_${Date.now()}_${file.name}`;
-
                 await cosInstance.putObject({
                     Bucket: bucketConfig.name,
                     Region: bucketConfig.region,
@@ -678,13 +654,12 @@
                 });
                 uploadedFiles++;
             }
-
             alert(`上传成功！共上传 ${totalFiles} 个文件`);
             selectedFiles = [];
             updateFileListDisplay();
             pwdInput.value = '';
             document.getElementById('clearFilesBtn').disabled = true;
-            loadAllCloudFiles(); // 重新加载所有文件
+            loadAllCloudFiles();
         } catch (err) {
             console.error('上传失败：', err);
             alert('部分文件上传失败，请重试');
@@ -694,28 +669,21 @@
             if (selectedFiles.length > 0) btn.disabled = false;
         }
     };
-
-    // ========== 核心：加载所有存储桶的文件 ==========
+    // 加载所有存储桶的文件
     const loadAllCloudFiles = async () => {
         const listEl = document.getElementById('fileList');
         listEl.innerHTML = '<div class="empty-tip">加载中...</div>';
-
         try {
-            // 1. 加载存储桶1（非APK）的文件
             const data1 = await cos1.getBucket({
                 Bucket: BUCKET1.name,
                 Region: BUCKET1.region,
                 Prefix: 'public-share/'
             });
-
-            // 2. 加载存储桶2（APK）的文件
             const data2 = await cos2.getBucket({
                 Bucket: BUCKET2.name,
                 Region: BUCKET2.region,
                 Prefix: 'public-share/'
             });
-
-            // 3. 合并并过滤有效文件
             const filesFromBucket1 = (data1.Contents || []).map(item => ({
                 ...item,
                 bucketType: 'normal' // 标记为普通文件
@@ -724,7 +692,6 @@
                 ...item,
                 bucketType: 'apk' // 标记为APK文件
             }));
-
             const allFiles = [...filesFromBucket1, ...filesFromBucket2];
             const validFiles = allFiles.filter(item => {
                 if (!item?.Key) return false;
@@ -736,21 +703,17 @@
                 const fileName = rest.split('_').slice(1).join('_') || rest;
                 return !!fileName.trim();
             });
-
-            // 4. 渲染文件列表
             listEl.innerHTML = '';
             if (!validFiles.length) {
                 listEl.innerHTML = '<div class="empty-tip">暂无文件</div>';
                 return;
             }
-
             validFiles.forEach(item => {
                 const full = item.Key.replace('public-share/', '');
                 const underIdx = full.indexOf('_');
                 const fileName = underIdx >= 0
                     ? full.substring(underIdx + 1).split('_').slice(1).join('_') || full.substring(underIdx + 1)
                     : full;
-
                 const div = document.createElement('div');
                 div.className = 'file-item';
                 // 存储桶类型和Key一起传递，用于下载/删除
@@ -769,58 +732,41 @@
             listEl.innerHTML = '<div class="empty-tip">加载失败</div>';
         }
     };
-
-    // ========== 打开密码弹窗（传递存储桶类型） ==========
     const openPwdModal = (key, name, bucketType) => {
         currentDownloadFile = { key, name, bucketType };
         document.getElementById('pwdModal').style.display = 'flex';
         document.getElementById('inputPwd').value = '';
     };
-
     const closePwdModal = () => {
         document.getElementById('pwdModal').style.display = 'none';
         currentDownloadFile = null;
     };
-
-    // 验证密码并下载（极速版：直接触发下载，保留纯文件名）
+    // 验证密码并下载
     const checkPwd = async () => {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
-
-        // 空值保护
         if (!currentDownloadFile || !currentDownloadFile.key || !currentDownloadFile.name) {
-            alert('下载信息异常，请重新点击下载按钮');
+            alert('下载失败，请重新点击下载按钮');
             closePwdModal();
             return;
         }
-
         const { key, name, bucketType } = currentDownloadFile;
         const full = key.replace('public-share/', '');
         const underIdx = full.indexOf('_');
         const correctPwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
-
-        // 密码验证
         if (inputPwd !== correctPwd) {
             alert('密码错误！');
             return;
         }
-
-        // 区分存储桶配置
         const isApkBucket = bucketType === 'apk';
         const cosInstance = isApkBucket ? cos2 : cos1;
         const bucketConfig = isApkBucket ? BUCKET2 : BUCKET1;
-
         try {
-            // ========== 1. 解析纯文件名 ==========
             let pureFileName = full.split('_').pop() || name;
-
-            // ========== 2. 获取下载链接 ==========
             let downloadUrl = '';
             if (isApkBucket) {
-                // APK文件：使用自定义域名直链
                 const encodedKey = encodeURIComponent(key);
                 downloadUrl = `${bucketConfig.domain}/${encodedKey}`;
             } else {
-                // 非APK文件：获取COS临时签名链接
                 downloadUrl = await cosInstance.getObjectUrl({
                     Bucket: bucketConfig.name,
                     Region: bucketConfig.region,
@@ -828,8 +774,6 @@
                     Expires: 3600
                 });
             }
-
-            // ========== 3. 直接触发下载（最快方式） ==========
             const a = document.createElement('a');
             a.href = downloadUrl;
             a.download = pureFileName; // 强制纯文件名
@@ -837,17 +781,14 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-
             closePwdModal();
             console.log('开始下载：', pureFileName);
         } catch (err) {
             console.error('下载失败：', err);
-            alert('下载失败，请右键下载按钮选择「另存为」手动保存');
+            alert('下载失败，');
             closePwdModal();
         }
     };
-
-    // ========== 分存储桶删除文件 ==========
     const deleteFile = async (key, bucketType) => {
         if (!isAdminLogin) {
             alert('请先管理员登录');
@@ -855,7 +796,6 @@
             return;
         }
         if (!confirm('确定删除？')) return;
-
         try {
             const isApkBucket = bucketType === 'apk';
             const cosInstance = isApkBucket ? cos2 : cos1;
