@@ -610,7 +610,6 @@
         document.getElementById('logoutBtn').style.display = 'block';
         updatePageLayout();
         loadCloudFiles();
-        alert('登录成功！');
     };
 
     // 管理员登出
@@ -623,23 +622,20 @@
         loadCloudFiles();
     };
 
-    // 上传文件到COS
+    // 上传文件
     const uploadToCloud = async () => {
         const pwdInput = document.getElementById('uploadPwd');
         const btn = document.getElementById('uploadBtn');
         const progress = document.getElementById('progress');
         const bar = document.getElementById('progressBar');
         const pwd = pwdInput.value.trim() || '';
-
         if (!selectedFiles.length) {
             alert('请选择文件！');
             return;
         }
-
         btn.disabled = true;
         bar.style.display = 'block';
         progress.style.width = '0%';
-
         try {
             const totalFiles = selectedFiles.length;
             let uploadedFiles = 0;
@@ -695,7 +691,6 @@
                 const fileName = underIdx >= 0
                     ? full.substring(underIdx + 1).split('_').slice(1).join('_') || full.substring(underIdx + 1)
                     : full;
-
                 const div = document.createElement('div');
                 div.className = 'file-item';
                 div.innerHTML = `
@@ -724,7 +719,7 @@
         currentDownloadFile = null;
     };
 
-    // 验证密码并下载（修复空值和超时问题）
+    // 验证密码并下载
     const checkPwd = async () => {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
         if (!currentDownloadFile || !currentDownloadFile.key || !currentDownloadFile.name) {
@@ -740,7 +735,6 @@
             alert('密码错误！');
             return;
         }
-
         try {
             const encodedKey = encodeURIComponent(key);
             const downloadUrl = `${CUSTOM_DOMAIN}/${encodedKey}`;
