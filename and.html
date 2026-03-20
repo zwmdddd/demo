@@ -54,9 +54,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             display: none;
         }
-        .logout-float-btn:hover {
-            background: #c0392b;
-        }
+        .logout-float-btn:hover {background: #c0392b;}
         .container {
             width: 100%;
             max-width: 800px;
@@ -298,9 +296,7 @@
             background: #f8f9fa;
             transition: background 0.2s;
         }
-        .file-item:hover {
-            background: #f1f2f6;
-        }
+        .file-item:hover {background: #f1f2f6;}
         .file-name {
             flex: 1;
             overflow: hidden;
@@ -395,9 +391,7 @@
             background: #27ae60;
             color: white;
         }
-        .confirm-btn:hover {
-            background: #219653;
-        }
+        .confirm-btn:hover {background: #219653;}
         .cancel-btn {
             background: #e74c3c;
             color: white;
@@ -442,16 +436,13 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             font-size: 14px;
         }
-        .home-btn:hover {
-            background: #219653;
-        }
+        .home-btn:hover {background: #219653;}
     </style>
 </head>
 <body>
 <button class="home-btn" onclick="location.href='index.html'">返回</button>
 <button class="login-float-btn" id="loginEntryBtn" onclick="openLoginModal()">登录</button>
 <button class="logout-float-btn" id="logoutBtn" onclick="adminLogout()">退出登录</button>
-
 <div class="login-modal" id="loginModal">
     <div class="login-box">
         <h2>登录</h2>
@@ -460,7 +451,6 @@
         <button class="login-btn" onclick="adminLogin()">登录</button>
     </div>
 </div>
-
 <div class="container">
     <div class="upload-section" id="uploadSection">
         <h3>文件上传</h3>
@@ -470,7 +460,6 @@
                     <input type="file" id="fileInput" multiple>
                 </label>
             </div>
-
             <div class="file-list-container">
                 <div class="file-list-header">
                     <span class="file-list-title">已选择文件</span>
@@ -480,7 +469,6 @@
                     <div class="no-files-text">未选择文件</div>
                 </div>
             </div>
-
             <div class="pwd-input-wrapper">
                 <input type="text" id="uploadPwd" class="pwd-input" placeholder="提取密码（选填）">
             </div>
@@ -490,7 +478,6 @@
             </div>
         </div>
     </div>
-
     <div class="file-list-section" id="fileListSection">
         <h3>文件列表</h3>
         <div class="file-list" id="fileList">
@@ -498,7 +485,6 @@
         </div>
     </div>
 </div>
-
 <div class="pwd-modal" id="pwdModal">
     <div class="pwd-box">
         <h4>请输入提取密码</h4>
@@ -519,13 +505,13 @@
     const BUCKET2 = {
         name: "zwmwebfile-1402111830",
         region: "ap-hongkong",
-        domain: "https://oss.8975612.xyz" // 自定义域名
+        domain: "https://oss.8975612.xyz"
     };
     const SecretId = "AKIDqo4Kd8hATioqeL2f9YvIUciiibJxc9Sa";
     const SecretKey = "6A7tgq2Kbv9NQFLNKIIRgq16OevyAQah";
     const ADMIN_CRED = { user: "admin", pwd: "admin" };
-    const cos1 = new COS({ SecretId, SecretKey }); // 存储桶1
-    const cos2 = new COS({ SecretId, SecretKey }); // 存储桶2
+    const cos1 = new COS({ SecretId, SecretKey });
+    const cos2 = new COS({ SecretId, SecretKey });
     let isAdminLogin = false;
     let currentDownloadFile = null;
     let selectedFiles = [];
@@ -533,10 +519,9 @@
         return fileName.toLowerCase().endsWith('.apk');
     };
     window.onload = () => {
-        loadAllCloudFiles(); // 加载所有存储桶的文件
+        loadAllCloudFiles();
         document.getElementById('fileInput').addEventListener('change', handleFileSelect);
     };
-
     const updatePageLayout = () => {
         const uploadSection = document.getElementById('uploadSection');
         const container = document.querySelector('.container');
@@ -548,7 +533,6 @@
             container.style.gap = '15px';
         }
     };
-
     const handleFileSelect = (e) => {
         if (!e.target.files.length) return;
         Array.from(e.target.files).forEach(file => {
@@ -562,7 +546,6 @@
         document.getElementById('clearFilesBtn').disabled = false;
         e.target.value = '';
     };
-
     const updateFileListDisplay = () => {
         const fileListEl = document.getElementById('selectedFilesList');
         if (!selectedFiles.length) {
@@ -576,7 +559,6 @@
             </div>
         `).join('');
     };
-
     const removeFile = (index) => {
         selectedFiles.splice(index, 1);
         updateFileListDisplay();
@@ -585,15 +567,13 @@
             document.getElementById('clearFilesBtn').disabled = true;
         }
     };
-
     const clearAllFiles = () => {
-        if (!confirm('确定要清空所有已选择的文件吗？')) return;
+        if (!confirm('确定清空所有已选择的文件吗？')) return;
         selectedFiles = [];
         updateFileListDisplay();
         document.getElementById('uploadBtn').disabled = true;
         document.getElementById('clearFilesBtn').disabled = true;
     };
-
     const openLoginModal = () => {
         document.getElementById('loginModal').style.display = 'flex';
     };
@@ -620,7 +600,6 @@
         loadAllCloudFiles();
     };
 
-    //分存储桶上传文件
     const uploadToCloud = async () => {
         const pwdInput = document.getElementById('uploadPwd');
         const btn = document.getElementById('uploadBtn');
@@ -669,7 +648,6 @@
             if (selectedFiles.length > 0) btn.disabled = false;
         }
     };
-    // 加载所有存储桶的文件
     const loadAllCloudFiles = async () => {
         const listEl = document.getElementById('fileList');
         listEl.innerHTML = '<div class="empty-tip">加载中...</div>';
@@ -686,11 +664,11 @@
             });
             const filesFromBucket1 = (data1.Contents || []).map(item => ({
                 ...item,
-                bucketType: 'normal' // 标记为普通文件
+                bucketType: 'normal'
             }));
             const filesFromBucket2 = (data2.Contents || []).map(item => ({
                 ...item,
-                bucketType: 'apk' // 标记为APK文件
+                bucketType: 'apk'
             }));
             const allFiles = [...filesFromBucket1, ...filesFromBucket2];
             const validFiles = allFiles.filter(item => {
@@ -716,7 +694,6 @@
                     : full;
                 const div = document.createElement('div');
                 div.className = 'file-item';
-                // 存储桶类型和Key一起传递，用于下载/删除
                 div.innerHTML = `
                     <span class="file-name">${fileName} ${item.bucketType === 'apk' ? '[APK]' : ''}</span>
                     <div class="file-actions">
@@ -741,11 +718,10 @@
         document.getElementById('pwdModal').style.display = 'none';
         currentDownloadFile = null;
     };
-    // 验证密码并下载
     const checkPwd = async () => {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
         if (!currentDownloadFile || !currentDownloadFile.key || !currentDownloadFile.name) {
-            alert('下载失败，请重新点击下载按钮');
+            alert('下载失败，请重新下载');
             closePwdModal();
             return;
         }
@@ -776,7 +752,7 @@
             }
             const a = document.createElement('a');
             a.href = downloadUrl;
-            a.download = pureFileName; // 强制纯文件名
+            a.download = pureFileName;
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
