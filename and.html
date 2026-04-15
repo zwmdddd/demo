@@ -437,6 +437,42 @@
             font-size: 14px;
         }
         .home-btn:hover {background: #219653;}
+        .custom-alert-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+        .custom-alert-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 280px;
+        }
+        .custom-alert-box p {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        .custom-alert-btn {
+            padding: 8px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .custom-alert-btn:hover {
+            background: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -518,6 +554,13 @@
     const isApkFile = (fileName) => {
         return fileName.toLowerCase().endsWith('.apk');
     };
+    const customAlert = (text) => {
+        document.getElementById('customAlertText').innerText = text;
+        document.getElementById('customAlertModal').style.display = 'flex';
+    };
+    const closeCustomAlert = () => {
+        document.getElementById('customAlertModal').style.display = 'none';
+    };
     window.onload = () => {
         loadAllCloudFiles();
         document.getElementById('fileInput').addEventListener('change', handleFileSelect);
@@ -568,7 +611,7 @@
         }
     };
     const clearAllFiles = () => {
-        if (!confirm('确定清空所有已选择的文件吗？')) return;
+        if (!confirm('确定清空所有已选的文件吗？')) return;
         selectedFiles = [];
         updateFileListDisplay();
         document.getElementById('uploadBtn').disabled = true;
@@ -581,7 +624,7 @@
         const user = document.getElementById('adminUser').value.trim();
         const pwd = document.getElementById('adminPwd').value.trim();
         if (user !== ADMIN_CRED.user || pwd !== ADMIN_CRED.pwd) {
-            alert('账号或密码错误！');
+            customAlert('账号或密码错误！');
             return;
         }
         isAdminLogin = true;
@@ -607,7 +650,7 @@
         const bar = document.getElementById('progressBar');
         const pwd = pwdInput.value.trim() || '';
         if (!selectedFiles.length) {
-            alert('请选择文件！');
+            customAlert('请选择文件！');
             return;
         }
         btn.disabled = true;
@@ -633,7 +676,7 @@
                 });
                 uploadedFiles++;
             }
-            alert(`上传成功！共上传 ${totalFiles} 个文件`);
+            customAlert(`上传成功！共上传 ${totalFiles} 个文件`);
             selectedFiles = [];
             updateFileListDisplay();
             pwdInput.value = '';
@@ -641,7 +684,7 @@
             loadAllCloudFiles();
         } catch (err) {
             console.error('上传失败：', err);
-            alert('部分文件上传失败，请重试');
+            customAlert('部分文件上传失败，请重试');
         } finally {
             bar.style.display = 'none';
             progress.style.width = '0%';
@@ -721,7 +764,7 @@
     const checkPwd = async () => {
         const inputPwd = document.getElementById('inputPwd').value.trim() || '';
         if (!currentDownloadFile || !currentDownloadFile.key || !currentDownloadFile.name) {
-            alert('下载失败，请重新下载');
+            customAlert('下载失败，请重新下载');
             closePwdModal();
             return;
         }
@@ -730,7 +773,7 @@
         const underIdx = full.indexOf('_');
         const correctPwd = underIdx >= 0 ? full.substring(0, underIdx) : '';
         if (inputPwd !== correctPwd) {
-            alert('密码错误！');
+            customAlert('密码错误！');
             return;
         }
         const isApkBucket = bucketType === 'apk';
@@ -761,13 +804,13 @@
             console.log('开始下载：', pureFileName);
         } catch (err) {
             console.error('下载失败：', err);
-            alert('下载失败，');
+            customAlert('下载失败，');
             closePwdModal();
         }
     };
     const deleteFile = async (key, bucketType) => {
         if (!isAdminLogin) {
-            alert('请先管理员登录');
+            customAlert('请先管理员登录');
             openLoginModal();
             return;
         }
@@ -785,9 +828,15 @@
             loadAllCloudFiles();
         } catch (e) {
             console.error('删除失败：', e);
-            alert('删除失败');
+            customAlert('删除失败');
         }
     };
 </script>
+<div class="custom-alert-modal" id="customAlertModal">
+    <div class="custom-alert-box">
+        <p id="customAlertText"></p>
+        <button class="custom-alert-btn" onclick="closeCustomAlert()">确定</button>
+    </div>
+</div>
 </body>
 </html>
