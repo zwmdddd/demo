@@ -814,7 +814,7 @@
             openLoginModal();
             return;
         }
-        if (!customAlert('确定删除？')) return;
+        if (!confirm('确定删除？')) return;
         try {
             const isApkBucket = bucketType === 'apk';
             const cosInstance = isApkBucket ? cos2 : cos1;
