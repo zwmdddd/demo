@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f6b2eba-6a54-4f98-b78f-ad1651874e22" name="更改" comment="更新" />
+    <list default="true" id="0f6b2eba-6a54-4f98-b78f-ad1651874e22" name="更改" comment="更新">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,23 +136,12 @@
       <workItem from="1776245422979" duration="114000" />
       <workItem from="1776245587039" duration="2609000" />
       <workItem from="1776261183160" duration="1913000" />
-      <workItem from="1776263228752" duration="478000" />
-    </task>
-    <task id="LOCAL-00040" summary="更新">
-      <option name="closed" value="true" />
-      <created>1770118330681</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1770118330681</updated>
-    </task>
-    <task id="LOCAL-00041" summary="更新">
-      <option name="closed" value="true" />
-      <created>1770124992693</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1770124992693</updated>
+      <workItem from="1776263228752" duration="1623000" />
+      <workItem from="1776678242618" duration="256000" />
+      <workItem from="1776678520531" duration="74000" />
+      <workItem from="1776678626591" duration="358000" />
+      <workItem from="1776679037174" duration="671000" />
+      <workItem from="1776738124289" duration="113000" />
     </task>
     <task id="LOCAL-00042" summary="更新">
       <option name="closed" value="true" />
@@ -527,7 +519,23 @@
       <option name="project" value="LOCAL" />
       <updated>1776263441425</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="更新">
+      <option name="closed" value="true" />
+      <created>1776263788863</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1776263788864</updated>
+    </task>
+    <task id="LOCAL-00090" summary="更新">
+      <option name="closed" value="true" />
+      <created>1776264133817</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1776264133817</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
