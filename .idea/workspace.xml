@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0f6b2eba-6a54-4f98-b78f-ad1651874e22" name="更改" comment="更新">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,7 +71,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/WebstormProjects/test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/jgpy&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -141,15 +142,8 @@
       <workItem from="1776678520531" duration="74000" />
       <workItem from="1776678626591" duration="358000" />
       <workItem from="1776679037174" duration="671000" />
-      <workItem from="1776738124289" duration="113000" />
-    </task>
-    <task id="LOCAL-00042" summary="更新">
-      <option name="closed" value="true" />
-      <created>1770125009292</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1770125009292</updated>
+      <workItem from="1776738124289" duration="1726000" />
+      <workItem from="1777798424731" duration="312000" />
     </task>
     <task id="LOCAL-00043" summary="更新">
       <option name="closed" value="true" />
@@ -535,7 +529,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776264133817</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="更新">
+      <option name="closed" value="true" />
+      <created>1776738251765</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1776738251765</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
